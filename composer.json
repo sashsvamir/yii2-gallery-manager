@@ -1,6 +1,6 @@
 {
     "name": "sashsvamir/yii2-gallery-manager",
-    "description": "Extension for yii, that allows to manage image galleries",
+    "description": "Port of 'zxbodya/yii-gallery-manager'. Extension for yii, that allows to manage image galleries",
     "type": "yii2-extension",
     "keywords": [
         "yii2",
