@@ -112,11 +112,6 @@ class GalleryBehavior extends Behavior
     public function attach($owner)
     {
         parent::attach($owner);
-        if (!isset($this->versions['original'])) {
-            $this->versions['original'] = function ($image) {
-                return $image;
-            };
-        }
         if (!isset($this->versions['preview'])) {
             $this->versions['preview'] = function ($originalImage) {
                 /** @var ImageInterface $originalImage */
@@ -188,14 +183,21 @@ class GalleryBehavior extends Behavior
 
     protected function getFileName($imageId, $version = 'original')
     {
-        return implode(
-            '/',
-            [
-                $this->getGalleryId(),
-                $imageId,
-                $version . '.' . $this->extension,
-            ]
-        );
+        // берем картинку из б.д.
+        $rawImage = (new Query())
+                ->select(['id', 'filename'])
+                ->from($this->tableName)
+                ->where(['id' => $imageId])
+                ->one();
+
+
+        if ($version == 'original') {
+            $fileName = $rawImage['filename'];
+        } else {
+            $fileName = pathinfo($rawImage['filename'], PATHINFO_FILENAME) . '_' . $version . '.' . $this->extension;
+        }
+        
+        return $this->getGalleryId() . '/' . $fileName;
     }
 
     public function getUrl($imageId, $version = 'original')
@@ -228,12 +230,22 @@ class GalleryBehavior extends Behavior
      * @param $imageId
      * @param $path
      */
-    public function replaceImage($imageId, $path)
+    public function replaceImage($imageId, $imageFile)
     {
-        $this->createFolders($this->getFilePath($imageId, 'original'));
+        $fileName = $this->getFilePath($imageId, 'original');
+        
+        // если файл уже есть, вернем false
+        if (file_exists($fileName)) {
+            return false;
+        }
 
-        $originalImage = Image::getImagine()->open($path);
-        //save image in original size
+        //create directories
+        $this->createFolders($fileName);
+
+        //save original file
+        $imageFile->saveAs($fileName);
+
+        $originalImage = Image::getImagine()->open($fileName);
 
         //create image preview for gallery manager
         foreach ($this->versions as $version => $fn) {
@@ -249,6 +261,8 @@ class GalleryBehavior extends Behavior
             $image
                 ->save($this->getFilePath($imageId, $version), $options);
         }
+
+        return true;
     }
 
     private function removeFile($fileName)
@@ -295,6 +309,10 @@ class GalleryBehavior extends Behavior
             $this->removeFile($filePath);
         }
         $filePath = $this->getFilePath($imageId, 'original');
+
+        // remove original file also
+        $this->removeFile($filePath);
+
         $parts = explode('/', $filePath);
         $parts = array_slice($parts, 0, count($parts) - 1);
         $dirPath = implode('/', $parts);
@@ -324,7 +342,7 @@ class GalleryBehavior extends Behavior
         }
     }
 
-    public function addImage($fileName)
+    public function addImage($imageFile)
     {
         $db = \Yii::$app->db;
         $db->createCommand()
@@ -332,7 +350,8 @@ class GalleryBehavior extends Behavior
                 $this->tableName,
                 [
                     'type' => $this->type,
-                    'ownerId' => $this->getGalleryId()
+                    'ownerId' => $this->getGalleryId(),
+                    'filename' => $imageFile->name,
                 ]
             )->execute();
 
@@ -344,7 +363,15 @@ class GalleryBehavior extends Behavior
                 ['id' => $id]
             )->execute();
 
-        $this->replaceImage($id, $fileName);
+        //если файл не сохранился, удалим прежде созданную запись б.д. и вернем false
+        if (!$this->replaceImage($id, $imageFile)) {
+            $db->createCommand()
+                ->delete(
+                    $this->tableName,
+                    ['id' => $id]
+                )->execute();
+            return false;
+        }
 
         $galleryImage = new GalleryImage($this, ['id' => $id]);
 

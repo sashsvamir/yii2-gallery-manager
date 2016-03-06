@@ -108,12 +108,20 @@ class GalleryManagerAction extends Action
 
         $imageFile = UploadedFile::getInstanceByName('image');
 
-        $fileName = $imageFile->tempName;
-        $image = $this->behavior->addImage($fileName);
+        $image = $this->behavior->addImage($imageFile);
 
         // not "application/json", because  IE8 trying to save response as a file
 
         Yii::$app->response->headers->set('Content-Type', 'text/html');
+
+        if (empty($image)) {
+            return Json::encode(
+                array(
+                    'filename' => (string)$imageFile->name,
+                    'error' => 'Файл с таким именем уже существует',
+                )
+            );   
+        }
 
         return Json::encode(
             array(

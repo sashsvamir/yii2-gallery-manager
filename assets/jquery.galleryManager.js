@@ -236,8 +236,13 @@
             uploadedCount++;
             if (this.status == 200) {
               var resp = JSON.parse(this.response);
-              addPhoto(resp['id'], resp['preview'], resp['name'], resp['description'], resp['rank']);
-              ids.push(resp['id']);
+              if (resp.error) {
+                alert(resp.filename + ': ' + resp.error);
+                $progressOverlay.hide();
+              } else {
+                addPhoto(resp['id'], resp['preview'], resp['name'], resp['description'], resp['rank']);
+                ids.push(resp['id']);
+              }
             } else {
               // exception !!!
             }
