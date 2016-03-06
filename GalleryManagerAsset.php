@@ -1,13 +1,13 @@
 <?php
 
-namespace zxbodya\yii2\galleryManager;
+namespace sashsvamir\galleryManager;
 
 use Yii;
 use yii\web\AssetBundle;
 
 class GalleryManagerAsset extends AssetBundle
 {
-    public $sourcePath = '@zxbodya/yii2/galleryManager/assets';
+    public $sourcePath = '@sashsvamir/galleryManager/assets';
     public $js = [
         'jquery.iframe-transport.js',
         'jquery.galleryManager.js',

@@ -2,17 +2,13 @@
 
 Yii2 port of https://github.com/zxbodya/yii-gallery-manager
 
-(frontend part mostly without changes, but backend was rewritten almost completely)
+#### This port have next features:
+- saving original file image with original filename
 
-Gallery manager screenshots (yii 1.x version, new one has bootstrap 3 styles):
-
-![GalleryManager images list](http://zxbodya.cc.ua/scrup/ci/eh1n1th6o0c80.png "Gallery Manager Screenshot")
-
-Few more screenshots:
-[drag & drop upload](http://zxbodya.cc.ua/scrup/6w/64q4icig84oo0.png "Drag & Drop image upload"), [editing image information](http://zxbodya.cc.ua/scrup/za/gfc68h5b4gksg.png "Edit image information"), [upload progress](http://zxbodya.cc.ua/scrup/8v/tijrezh7oksk8.png "upload progress"), 
+**warning: preview version**
 
 
-## Features
+### Features
 
 1. AJAX image upload
 2. Optional name and description for each image
@@ -20,27 +16,28 @@ Few more screenshots:
 4. Ability to generate few versions for each image with different configurations
 5. Drag & Drop
 
-## Decencies
+### Decencies
 
 1. Yii2
 2. Twitter bootstrap assets (version 3)
 3. Imagine library
 4. JQuery UI (included with Yii)
 
-## Installation:
+
+### Installation:
 The preferred way to install this extension is through [composer](https://getcomposer.org/).
 
 Either run
 
-`php composer.phar require --prefer-dist zxbodya/yii2-gallery-manager "*@dev"`
+`php composer.phar require --prefer-dist sashsvamir/yii2-gallery-manager "*@dev"`
 
 or add
 
-`"zxbodya/yii2-gallery-manager": "*@dev"`
+`"sashsvamir/yii2-gallery-manager": "*@dev"`
 
 to the require section of your `composer.json` file.
 
-## Usage
+### Usage
 
 Add migration to create table for images:
 
@@ -134,9 +131,9 @@ foreach($model->getBehavior('galleryBehavior')->getImages() as $image) {
 ```
 
 
-## Options 
+### Options 
 
-### Using non default table name for gallery images(default is `{{%gallery_image}}`):
+#### Using non default table name for gallery images(default is `{{%gallery_image}}`):
 
 1. Add migration that will create table you need
 2. Change `tableName` property in behavior configuration

@@ -1,6 +1,6 @@
 <?php
 
-namespace zxbodya\yii2\galleryManager;
+namespace sashsvamir\galleryManager;
 
 use Yii;
 use yii\base\Exception;

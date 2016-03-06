@@ -1,6 +1,6 @@
 <?php
 
-namespace zxbodya\yii2\galleryManager;
+namespace sashsvamir\galleryManager;
 
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
