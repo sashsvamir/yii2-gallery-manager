@@ -107,17 +107,18 @@ public function actions()
 Add ImageAttachmentWidget somewhere in you application, for example in editing from.
 
 ```php
-if ($model->isNewRecord) {
-    echo 'Can not upload images for new record';
-} else {
+    use sashsvamir\galleryManager\GalleryManager;
+    //...
     echo GalleryManager::widget(
         [
             'model' => $model,
             'behaviorName' => 'galleryBehavior',
             'apiRoute' => 'product/galleryApi'
+            'options' => [
+                'class' => 'form-group',
+            ],
         ]
     );
-}
 ```
         
 Done!

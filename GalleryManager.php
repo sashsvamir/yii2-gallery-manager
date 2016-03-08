@@ -58,6 +58,10 @@ class GalleryManager extends Widget
             throw new Exception('$apiRoute must be set.', 500);
         }
 
+        if ($this->model->isNewRecord) {
+             return $this->render('galleryManagerNewRecord');
+        }
+
         $images = array();
         foreach ($this->behavior->getImages() as $image) {
             $images[] = array(
