@@ -94,7 +94,7 @@ class GalleryManager extends Widget
         $view->registerJs("$('#{$this->id}').galleryManager({$opts});");
 
         $this->options['id'] = $this->id;
-        $this->options['class'] = 'gallery-manager';
+        $this->options['class'] = 'gallery-manager' . ($this->options['class'] ? ' ' . $this->options['class'] : null);
 
         return $this->render('galleryManager');
     }
