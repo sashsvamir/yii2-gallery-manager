@@ -106,6 +106,8 @@ class GalleryBehavior extends Behavior
     public $tableName = '{{%gallery_image}}';
     protected $_galleryId;
 
+    protected $_file_name;
+
     /**
      * @param ActiveRecord $owner
      */
@@ -183,6 +185,10 @@ class GalleryBehavior extends Behavior
 
     protected function getFileName($imageId, $version = 'original')
     {
+    	if ($this->_file_name !== null) {
+    		return $this->_file_name;
+	    }
+
         // берем картинку из б.д.
         $rawImage = (new Query())
                 ->select(['id', 'filename'])
@@ -197,7 +203,7 @@ class GalleryBehavior extends Behavior
             $fileName = pathinfo($rawImage['filename'], PATHINFO_FILENAME) . '_' . $version . '.' . $this->extension;
         }
         
-        return $this->getGalleryId() . '/' . $fileName;
+        return $this->_file_name = $this->getGalleryId() . '/' . $fileName;
     }
 
     public function getUrl($imageId, $version = 'original')
