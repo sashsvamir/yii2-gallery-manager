@@ -97,18 +97,14 @@ public function actions()
 Add ImageAttachmentWidget somewhere in you application, for example in editing from.
 
 ```php
-    use sashsvamir\galleryManager\GalleryManager;
-    //...
-    echo GalleryManager::widget(
-        [
-            'model' => $model,
-            'behaviorName' => 'galleryBehavior',
-            'apiRoute' => 'product/galleryApi'
-            'options' => [
-                'class' => 'form-group',
-            ],
-        ]
-    );
+    echo sashsvamir\galleryManager\GalleryManager::widget([
+        'model' => $model,
+        'behaviorName' => 'galleryBehavior',
+        'apiRoute' => 'product/galleryApi',
+        'options' => [
+            'class' => 'form-group',
+        ],
+    ]);
 ```
         
 Done!
