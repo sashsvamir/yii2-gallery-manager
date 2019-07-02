@@ -16,39 +16,29 @@ Yii2 port of https://github.com/zxbodya/yii-gallery-manager
 4. Ability to generate few versions for each image with different configurations
 5. Drag & Drop
 
-### Decencies
+### Dependencies
 
 1. Yii2
-2. Twitter bootstrap assets (version 3)
+2. Twitter bootstrap assets (v3)
 3. Imagine library
 4. JQuery UI (included with Yii)
 
 
 ### Installation:
-The preferred way to install this extension is through [composer](https://getcomposer.org/).
-
-Either run
 
 `php composer.phar require --prefer-dist sashsvamir/yii2-gallery-manager "*@dev"`
 
-or add
-
-`"sashsvamir/yii2-gallery-manager": "*@dev"`
-
-to the require section of your `composer.json` file.
 
 ### Usage
 
 Add migration to create table for images:
 
 ```php
-class m150318_154933_gallery_ext
-    extends zxbodya\yii2\galleryManager\migrations\m140930_003227_gallery_manager
+class m150318_154933_gallery_ext extends \sashsvamir\galleryManager\migrations\m140930_003227_gallery_manager
 {
-
 }
 ```
-Or better - copy migration to you application.
+Or better - copy migration to your application.
 
 Add GalleryBehavior to your model, and configure it, create folder for uploaded files.
 
@@ -57,7 +47,7 @@ public function behaviors()
 {
     return [
          'galleryBehavior' => [
-             'class' => GalleryBehavior::className(),
+             'class' => GalleryBehavior::class,
              'type' => 'product',
              'extension' => 'jpg',
              'directory' => Yii::getAlias('@webroot') . '/images/product/gallery',
@@ -94,10 +84,10 @@ public function actions()
 {
     return [
        'galleryApi' => [
-           'class' => GalleryManagerAction::className(),
+           'class' => GalleryManagerAction::class,
            // mappings between type names and model classes (should be the same as in behaviour)
            'types' => [
-               'product' => Product::className()
+               'product' => Product::class
            ]
        ],
     ];
@@ -107,18 +97,14 @@ public function actions()
 Add ImageAttachmentWidget somewhere in you application, for example in editing from.
 
 ```php
-    use sashsvamir\galleryManager\GalleryManager;
-    //...
-    echo GalleryManager::widget(
-        [
-            'model' => $model,
-            'behaviorName' => 'galleryBehavior',
-            'apiRoute' => 'product/galleryApi'
-            'options' => [
-                'class' => 'form-group',
-            ],
-        ]
-    );
+    echo sashsvamir\galleryManager\GalleryManager::widget([
+        'model' => $model,
+        'behaviorName' => 'galleryBehavior',
+        'apiRoute' => 'product/galleryApi',
+        'options' => [
+            'class' => 'form-group',
+        ],
+    ]);
 ```
         
 Done!
