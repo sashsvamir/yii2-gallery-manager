@@ -55,7 +55,7 @@ public function behaviors()
 {
     return [
          'galleryBehavior' => [
-             'class' => GalleryBehavior::className(),
+             'class' => GalleryBehavior::class,
              'type' => 'product',
              'extension' => 'jpg',
              'directory' => Yii::getAlias('@webroot') . '/images/product/gallery',
