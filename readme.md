@@ -42,10 +42,8 @@ to the require section of your `composer.json` file.
 Add migration to create table for images:
 
 ```php
-class m150318_154933_gallery_ext
-    extends zxbodya\yii2\galleryManager\migrations\m140930_003227_gallery_manager
+class m150318_154933_gallery_ext extends \sashsvamir\galleryManager\migrations\m140930_003227_gallery_manager
 {
-
 }
 ```
 Or better - copy migration to you application.
