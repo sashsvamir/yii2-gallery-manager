@@ -16,26 +16,18 @@ Yii2 port of https://github.com/zxbodya/yii-gallery-manager
 4. Ability to generate few versions for each image with different configurations
 5. Drag & Drop
 
-### Decencies
+### Dependencies
 
 1. Yii2
-2. Twitter bootstrap assets (version 3)
+2. Twitter bootstrap assets (v3)
 3. Imagine library
 4. JQuery UI (included with Yii)
 
 
 ### Installation:
-The preferred way to install this extension is through [composer](https://getcomposer.org/).
-
-Either run
 
 `php composer.phar require --prefer-dist sashsvamir/yii2-gallery-manager "*@dev"`
 
-or add
-
-`"sashsvamir/yii2-gallery-manager": "*@dev"`
-
-to the require section of your `composer.json` file.
 
 ### Usage
 
@@ -46,7 +38,7 @@ class m150318_154933_gallery_ext extends \sashsvamir\galleryManager\migrations\m
 {
 }
 ```
-Or better - copy migration to you application.
+Or better - copy migration to your application.
 
 Add GalleryBehavior to your model, and configure it, create folder for uploaded files.
 
