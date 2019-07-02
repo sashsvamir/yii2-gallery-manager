@@ -92,10 +92,10 @@ public function actions()
 {
     return [
        'galleryApi' => [
-           'class' => GalleryManagerAction::className(),
+           'class' => GalleryManagerAction::class,
            // mappings between type names and model classes (should be the same as in behaviour)
            'types' => [
-               'product' => Product::className()
+               'product' => Product::class
            ]
        ],
     ];
