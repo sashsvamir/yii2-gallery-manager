@@ -214,7 +214,9 @@ class GalleryBehavior extends Behavior
         $path = $this->getFilePath($imageId, $version);
 
         if (!file_exists($path)) {
-            return null;
+            // build thumbnail if image file not exist
+            $this->createVersions($imageId, [$version]);
+            // return null;
         }
 
         if (!empty($this->timeHash)) {
@@ -241,37 +243,55 @@ class GalleryBehavior extends Behavior
      */
     public function replaceImage($imageId, $imageFile)
     {
-        $fileName = $this->getFilePath($imageId, 'original');
+        $filePath = $this->getFilePath($imageId, 'original');
         
         // если файл уже есть, вернем false
-        if (file_exists($fileName)) {
+        if (file_exists($filePath)) {
             return false;
         }
 
         //create directories
-        $this->createFolders($fileName);
+        $this->createFolders($filePath);
 
         //save original file
-        $imageFile->saveAs($fileName);
+        $imageFile->saveAs($filePath);
 
-        $originalImage = Image::getImagine()->open($fileName);
+        // create versions
+        $this->createVersions($imageId); // TODO: fix arguments !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        //create image preview for gallery manager
+        return true;
+    }
+
+    /**
+     * Create image thumbnails
+     *
+     * @param string $imageId id of image
+     * @param array $restrictVersions restrict thumbnails by specific versions. All version generated if empty
+     */
+    public function createVersions(int $imageId, array $restrictVersions = []) : void
+    {
+        $path = $this->getFilePath($imageId);
+        $originalImage = Image::getImagine()->open($path);
+
         foreach ($this->versions as $version => $fn) {
-            /** @var ImageInterface $image */
+            // skip if versions passed but not equale current version
+            if (!empty($restrictVersions) && !in_array($version, $restrictVersions)) {
+                continue;
+            }
 
+            // generate version:
+
+            /** @var ImageInterface $image */
             $image = call_user_func($fn, $originalImage);
+
             if (is_array($image)) {
                 list($image, $options) = $image;
             } else {
                 $options = [];
             }
 
-            $image
-                ->save($this->getFilePath($imageId, $version), $options);
+            $image->save($this->getFilePath($imageId, $version), $options);
         }
-
-        return true;
     }
 
     private function removeFile($fileName)
